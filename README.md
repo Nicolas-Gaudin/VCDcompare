@@ -15,21 +15,8 @@ Run the app:
 ```bash
 python3 VCDcompare.py
 ```
-Tap your memory address in hexadecimal format.
+It writes on a message.log file all the difference between changes of aimed signals from two vcd files
 
-Example :
-If your address is ```0x0054 3210``` , tap ```543210``` in the field.
-
-## Considered cache configuration
-
-| Parameter                     | #  |
-|-------------------------------|----|
-| Address width                 | 22 |
-| Number of set                 | 16 |
-| Number of word per cache line | 4  |
-
-## Next upgrades 
-
-- Ask user his cache config and address width
+# in construction...
   
 
