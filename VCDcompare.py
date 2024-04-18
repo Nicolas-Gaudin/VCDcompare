@@ -6,7 +6,7 @@ Date Modified: April 02, 2024
 Version: 1.0
 Python Version: 3.10.12
 Dependencies: time, sys
-License: MIT License
+License: GPL-3.0 License
 """
 
 
