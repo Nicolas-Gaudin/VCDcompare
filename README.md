@@ -1,7 +1,7 @@
 <p align="center">
     <img src="https://img.shields.io/badge/language-Python3-%23f34b7d.svg?style=for-the-badge" alt="Python3">
     <img src="https://img.shields.io/badge/tool type-HDL debugging support-red?style=for-the-badge" alt="tool">
-    <img src="https://img.shields.io/badge/Licence-MIT-0078d7.svg?style=for-the-badge" alt="MIT">
+    <img src="https://img.shields.io/badge/Licence-GPL--3.0-0078d7.svg?style=for-the-badge" alt="GPL-3.0">
 </p>
 
 # VCDcompare
