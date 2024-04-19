@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Description: 
 Author: Nicolas Gaudin
@@ -9,23 +11,15 @@ Dependencies: time, sys
 License: GPL-3.0 License
 """
 
-
-#utilization
+# Utilization
 # 2 vcd files with same signals
 # it compares consequently traces of aimed signals
 # signals to be compared are declared in the variable "signals"
 # if you want to analyze a signal from a bloc that is declared multiples times, only the first declared will be analyzed
 # cannot compare 1-bit signal
 
-
 import time, sys
-
-start_time = time.time_ns()
-
-old_stdout = sys.stdout
-log_file = open("message.log","w")
-sys.stdout = log_file
-
+import argparse
 
 def searchOccurence(file, signal) -> int:
     F = []
@@ -49,20 +43,15 @@ def searchOccurence(file, signal) -> int:
                     listt.append(vcd.replace(invcd1,'').replace(" \n",''))
                     F.append(listt)
             if vcd.find('#0',0,2) != -1:
-                # print(Fore.RED + "debug")
-                # print(Style.RESET_ALL)
                 header = 0
             if(is_in == 1) :
                 if vcd.find(signal) != -1:
-                    # print(vcd)
                     test = vcd.split(' ')
                     test = list(filter(None, test))
-                    # print(test)
                     if (len(test) >= 5 ):
                         if((test[4] == signal) and (len(signal) == len(test[4]))):
                             invcd1 = test[3]
                             is_in = 0
-                            # printTab(invcd1)
     return F
 
 def searchDiff(f1, f2, signals) -> int:
@@ -70,11 +59,6 @@ def searchDiff(f1, f2, signals) -> int:
     for signal in signals:
         F1 = searchOccurence(f1, signal)
         F2 = searchOccurence(f2, signal)
-        # print(F1)
-        # print(F2)
-
-        # print(len(F1))
-        # print(len(F2))
 
         i = 0 
         for val1,val2 in zip(F1,F2):
@@ -98,18 +82,37 @@ def printTab(*args):
     args = ("\t",)+args
     print(*args)
 
-# signals = ["sp"]
-signals = ["ra","sp","gp","tp","t0","t1","t2","s0","s1","a0","a1","a2","a3","a4","a5","a6","a7","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","t3","t4","t5","t6"]
+def main():
 
-vcdF1 = "good.vcd"
-vcdF2 = "bad.vcd"
+    parser = argparse.ArgumentParser(description='VCDcompare - a tool to support when modifying an HDL module ')
 
-searchDiff(vcdF1, vcdF2, signals)
+    parser.add_argument('-f1', '--file1', type=str, required=True, help='First VCD file path')
+    parser.add_argument('-f2', '--file2', type=str, required=True, help='Second VCD file path')
+    parser.add_argument('-l', '--log', type=str, required=True, help='Log file path')
+    parser.add_argument('-s', '--signals', nargs='+', type=str, required=True, help='List of signals (Example : "-s ra sp")')
+    
+    args = parser.parse_args()
 
-sys.stdout = old_stdout
-log_file.close()
+    signals = args.signals
+    print(args.signals)
+
+    vcdF1 = args.file1
+    vcdF2 = args.file2
+
+    start_time = time.time_ns()
+
+    old_stdout = sys.stdout
+    log_file = open(args.log, "w")
+    sys.stdout = log_file
+
+    searchDiff(vcdF1, vcdF2, signals)
+
+    sys.stdout = old_stdout
+    log_file.close()
 
 
-end_time = ((time.time_ns() - start_time)) / 1000000
-print("--- %s ms ---" % end_time)
+    end_time = ((time.time_ns() - start_time)) / 1000000
+    print("--- %s ms ---" % end_time)
 
+if __name__ == "__main__":
+    main()
